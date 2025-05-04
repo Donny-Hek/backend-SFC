@@ -18,6 +18,9 @@ public class User {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Enumerated(EnumType.STRING)
+    final private Role role=Role.USER;
+
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "subs_id", nullable = false)
     private Subscription subs;
