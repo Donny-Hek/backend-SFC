@@ -38,10 +38,9 @@ public class User {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @OneToOne(mappedBy = "email")
-    private Authoriz email;
-
     @OneToOne(mappedBy = "user")
     private RefreshToken refreshTokens;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Authoriz authoriz;
 }

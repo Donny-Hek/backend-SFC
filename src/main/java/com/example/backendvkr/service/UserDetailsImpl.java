@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Getter
@@ -24,6 +22,10 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
+
+    public static UserDetails build(User user) {
+        return null;
+    }
 
 //    public static UserDetailsImpl build(User user) {
 //        List<GrantedAuthority> authorities = user.getRoles().stream()
