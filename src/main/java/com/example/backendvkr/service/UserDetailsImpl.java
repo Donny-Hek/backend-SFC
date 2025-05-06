@@ -1,4 +1,5 @@
 package com.example.backendvkr.service;
+import com.example.backendvkr.model.Authoriz;
 import com.example.backendvkr.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -9,34 +10,37 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-@Service
-@Getter
 @Builder
+@Data
+@Service
 @AllArgsConstructor
-@NoArgsConstructor(force = true)
+//@NoArgsConstructor
 public class UserDetailsImpl implements UserDetails {
     private final int id;
-    private final String username;
-    private final String email;
+    private final String username; // email из Authoriz
+    private final String firstName;
+    private final String lastName;
+//    private final String email;
     @JsonIgnore
-    private final String password;
+    private final String password;// passwordHash из Authoriz
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public static UserDetails build(User user) {
-        return null;
+    public static UserDetailsImpl build(User user) {
+        List<GrantedAuthority> authorities = Collections.singletonList(
+                new SimpleGrantedAuthority(user.getRole().name())
+        );
+        Authoriz authoriz = user.getAuthoriz();
+        return new UserDetailsImpl(
+                user.getId(),
+                authoriz.getEmail(), // email из Authoriz
+                authoriz.getPasswordHash(), // пароль из Authoriz
+                user.getFirstName(),
+                user.getLastName(),
+                authorities);
     }
-
-//    public static UserDetailsImpl build(User user) {
-//        List<GrantedAuthority> authorities = user.getRoles().stream()
-//                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-//                .collect(Collectors.toList());
-//
-//        return new UserDetailsImpl(user.getId(),
-//                user.getEmail(),
-//                user.getEmail().getPasswordHash(),
-//                authorities);
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

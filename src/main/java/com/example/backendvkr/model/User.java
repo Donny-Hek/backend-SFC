@@ -10,7 +10,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Table(name = "users")
 public class User {
     @Id
@@ -19,6 +19,7 @@ public class User {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
+//    @NonNull
     final private Role role=Role.USER;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
