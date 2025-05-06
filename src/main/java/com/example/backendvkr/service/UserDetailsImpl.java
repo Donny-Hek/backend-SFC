@@ -3,7 +3,6 @@ import com.example.backendvkr.model.Authoriz;
 import com.example.backendvkr.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,16 +16,15 @@ import java.util.List;
 @Data
 @Service
 @AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-    private final int id;
-    private final String username; // email из Authoriz
-    private final String firstName;
-    private final String lastName;
-//    private final String email;
+    private int id;
+    private String firstName;
+    private String lastName;
+    private String email;
     @JsonIgnore
-    private final String password;// passwordHash из Authoriz
-    private final Collection<? extends GrantedAuthority> authorities;
+    private String password;// passwordHash из Authoriz
+    private Collection<? extends GrantedAuthority> authorities;
 
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = Collections.singletonList(
@@ -54,7 +52,8 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+//        return username;
+        return email;
     }
 
     @Override
