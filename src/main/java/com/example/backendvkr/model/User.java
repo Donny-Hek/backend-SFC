@@ -3,14 +3,13 @@ package com.example.backendvkr.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "users")
 public class User {
     @Id
@@ -19,8 +18,7 @@ public class User {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-//    @NonNull
-    final private Role role=Role.USER;
+    private final Role role=Role.USER;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "subs_id", nullable = false)
@@ -37,11 +35,19 @@ public class User {
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
-    private Instant createdAt;
+    private LocalDate createdAt;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
     private RefreshToken refreshTokens;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Authoriz authoriz;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
+    private Authoriz authoriz; //обязательное
+
+    public User(String firstName, String lastName, String status, Subscription free, LocalDate now) {
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.status=status;
+        this.subs=free;
+        this.createdAt=now;
+    }
 }

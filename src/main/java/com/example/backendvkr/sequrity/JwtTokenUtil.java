@@ -1,5 +1,6 @@
 package com.example.backendvkr.sequrity;
 
+import com.example.backendvkr.model.Authoriz;
 import com.example.backendvkr.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -29,20 +30,18 @@ public class JwtTokenUtil {
     @Value("${jwt.refresh.expiration}")
     private long refreshExpiration;
 
-    public String generateAccessToken(Authentication authentication) {
-        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+    public String generateAccessToken(Authoriz auth) {
         return Jwts.builder()
-                .setSubject(userPrincipal.getUsername())
+                .setSubject(auth.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + accessExpiration))
                 .signWith(key(accessSecret), SignatureAlgorithm.HS512)
                 .compact();
     }
 
-    public String generateRefreshToken(Authentication authentication) {
-        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+    public String generateRefreshToken(Authoriz auth) {
         return Jwts.builder()
-                .setSubject(userPrincipal.getUsername())
+                .setSubject(auth.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
                 .signWith(key(refreshSecret), SignatureAlgorithm.HS512)

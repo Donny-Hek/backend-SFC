@@ -3,6 +3,7 @@ package com.example.backendvkr.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -10,6 +11,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Setter
 @Entity
 @Table(name = "authoriz")
+@RequiredArgsConstructor
 public class Authoriz {
     @Id
     private Integer id;//равен user_id
@@ -27,6 +29,12 @@ public class Authoriz {
     @ColumnDefault("false")
     @Column(name = "is_verified")
     private Boolean isVerified;
+
+    public Authoriz(String email, String encode, boolean b) {
+        this.email=email;
+        this.passwordHash=encode;
+        this.isVerified=b;
+    }
 
     //@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     //@JoinColumn(name = "email", nullable = false, referencedColumnName = "email")
