@@ -1,6 +1,7 @@
 package com.example.backendvkr.sequrity;
 
 import com.example.backendvkr.model.Authoriz;
+import com.example.backendvkr.model.User;
 import com.example.backendvkr.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtTokenUtil {
@@ -30,21 +33,34 @@ public class JwtTokenUtil {
     @Value("${jwt.refresh.expiration}")
     private long refreshExpiration;
 
-    public String generateAccessToken(Authoriz auth) {
+    private Key key(String secret) {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+    }
+
+    public String generateAccessToken(UserDetailsImpl authentication) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", authentication.getId());
+        claims.put("email", authentication.getEmail());
+        claims.put("lastName", authentication.getLastName());
         return Jwts.builder()
-                .setSubject(auth.getEmail())
+                .setClaims(claims)
+                .setSubject(authentication.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + accessExpiration))
-                .signWith(key(accessSecret), SignatureAlgorithm.HS512)
+                .signWith(key(accessSecret), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String generateRefreshToken(Authoriz auth) {
+    public String generateRefreshToken(UserDetailsImpl authentication) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", authentication.getId());
+        claims.put("email", authentication.getEmail());
+        claims.put("lastName", authentication.getLastName());
         return Jwts.builder()
-                .setSubject(auth.getEmail())
+                .setSubject(authentication.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
-                .signWith(key(refreshSecret), SignatureAlgorithm.HS512)
+                .setExpiration(new Date(System.currentTimeMillis() + accessExpiration))
+                .signWith(key(accessSecret), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -58,7 +74,7 @@ public class JwtTokenUtil {
 
     private boolean validateToken(String token, String secret) {
         try {
-            Jwts.parserBuilder().setSigningKey(key(secret)).build().parse(token);
+            Jwts.parserBuilder().setSigningKey(key(secret)).build().parseClaimsJws(token);
             return true;
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
@@ -72,17 +88,16 @@ public class JwtTokenUtil {
         return false;
     }
 
-    private Key key(String secret) {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+    public String getEmailFromAccessToken(String token) {
+        return getEmailFromToken(token,accessSecret);
     }
 
-    public String getUsernameFromAccessToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key(accessSecret)).build()
-                .parseClaimsJws(token).getBody().getSubject();
+    public String getEmailFromRefreshToken(String token) {
+        return getEmailFromToken(token,refreshSecret);
     }
 
-    public String getUsernameFromRefreshToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key(refreshSecret)).build()
+    public String getEmailFromToken(String token,String secret) {
+        return Jwts.parserBuilder().setSigningKey(key(secret)).build()
                 .parseClaimsJws(token).getBody().getSubject();
     }
 }

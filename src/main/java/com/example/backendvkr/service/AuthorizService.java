@@ -2,6 +2,7 @@ package com.example.backendvkr.service;
 
 import com.example.backendvkr.dto.AuthResponseDto;
 import com.example.backendvkr.dto.LoginDto;
+import com.example.backendvkr.dto.MessageResponse;
 import com.example.backendvkr.dto.RegisterDto;
 import com.example.backendvkr.model.Authoriz;
 import com.example.backendvkr.model.RefreshToken;
@@ -9,15 +10,20 @@ import com.example.backendvkr.model.User;
 import com.example.backendvkr.repository.AuthorizRepository;
 import com.example.backendvkr.repository.SubscriptionRepository;
 import com.example.backendvkr.repository.UserRepository;
+import com.example.backendvkr.sequrity.JwtTokenUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,24 +33,36 @@ public class AuthorizService {
     private final PasswordEncoder passwordEncoder;
     private final AuthorizRepository authorizRepository;
     private final SubscriptionRepository subscriptionRepository;
-//    private final JwtGenerator jwtGenerator;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final RefreshTokenService refreshTokenService;
 
-//    public AuthResponseDto login(LoginDto loginDto) {
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        loginDto.getLogin(),
-//                        loginDto.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        String token = jwtGenerator.generateToken(authentication);
-//        User user = userRepository.findByLogin(loginDto.getLogin()).orElseThrow();
-//        return new AuthResponseDto(
-//        token, user.getRole().name()
-//        );
-//    }
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDto.getLogin(),
+                        loginDto.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-    public void register(RegisterDto registerDto) {
+        String jwt = jwtTokenUtil.generateAccessToken(userDetails);
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+
+        return ResponseEntity.ok(new AuthResponseDto(
+                jwt,
+                "Bearer",
+                refreshToken.getToken(),
+                userDetails.getId(),
+                userDetails.getFirstName(),
+                userDetails.getLastName(),
+                userDetails.getEmail(),
+                userDetails.getStatus()
+        ));
+    }
+
+    @Transactional
+    public ResponseEntity<?> register(@RequestBody RegisterDto registerDto) {
         if (authorizRepository.existsByEmail(registerDto.getEmail())) {
-            throw new RuntimeException("Username is already taken!");
+            ResponseEntity.badRequest().body(new MessageResponse("Ошибка: Почта уже занята!"));
         }
         User user = new User(
                 registerDto.getFirstName(),
@@ -57,8 +75,11 @@ public class AuthorizService {
                 registerDto.getEmail(),
                 passwordEncoder.encode(registerDto.getPassword()),
                 false);
-//        RefreshToken refreshToken=new RefreshToken();
+//        RefreshToken refreshToken = new RefreshToken(
+//                passwordEncoder.encode(UUID.randomUUID().toString()));
         user.setAuthoriz(authoriz);
+//        user.setRefreshTokens(refreshToken);
         userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("Вы успешно зарегистрировались!"));
     }
 }

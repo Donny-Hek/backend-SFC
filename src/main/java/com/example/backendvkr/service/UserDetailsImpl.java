@@ -18,10 +18,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-    private int id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String email;
+    private String status;
     @JsonIgnore
     private String password;// passwordHash из Authoriz
     private Collection<? extends GrantedAuthority> authorities;
@@ -30,13 +31,13 @@ public class UserDetailsImpl implements UserDetails {
         List<GrantedAuthority> authorities = Collections.singletonList(
                 new SimpleGrantedAuthority(user.getRole().name())
         );
-        Authoriz authoriz = user.getAuthoriz();
         return new UserDetailsImpl(
                 user.getId(),
-                authoriz.getEmail(), // email из Authoriz
-                authoriz.getPasswordHash(), // пароль из Authoriz
                 user.getFirstName(),
                 user.getLastName(),
+                user.getAuthoriz().getEmail(), // email из Authoriz
+                user.getStatus(),
+                user.getAuthoriz().getPasswordHash(), // пароль из Authoriz
                 authorities);
     }
 
