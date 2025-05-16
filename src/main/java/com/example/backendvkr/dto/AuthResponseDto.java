@@ -8,7 +8,7 @@ import lombok.Data;
 public class AuthResponseDto {
     private String accessToken;
     private String type = "Bearer";
-    private String refreshToken;
+//    private String refreshToken;
 //    Личные данные
     private Integer id;
     private String firstName;

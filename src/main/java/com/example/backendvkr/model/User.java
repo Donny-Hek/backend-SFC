@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+//@NoArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "users")
 public class User {

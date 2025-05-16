@@ -45,12 +45,12 @@ public class AuthorizService {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         String jwt = jwtTokenUtil.generateAccessToken(userDetails);
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+//        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
 
         return ResponseEntity.ok(new AuthResponseDto(
                 jwt,
                 "Bearer",
-                refreshToken.getToken(),
+//                refreshToken.getToken(),
                 userDetails.getId(),
                 userDetails.getFirstName(),
                 userDetails.getLastName(),
