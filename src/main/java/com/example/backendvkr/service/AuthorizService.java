@@ -77,8 +77,11 @@ public class AuthorizService {
                 false);
 //        RefreshToken refreshToken = new RefreshToken(
 //                passwordEncoder.encode(UUID.randomUUID().toString()));
-        user.setAuthoriz(authoriz);
+
 //        user.setRefreshTokens(refreshToken);
+//        userRepository.save(user);
+        authoriz.setUser(user);
+        user.setAuthoriz(authoriz);
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("Вы успешно зарегистрировались!"));
     }

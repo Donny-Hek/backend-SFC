@@ -34,11 +34,11 @@ public class User {
     private String status;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDate createdAt;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
-    private RefreshToken refreshTokens;
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
+//    private RefreshToken refreshTokens;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
     private Authoriz authoriz; //обязательное
