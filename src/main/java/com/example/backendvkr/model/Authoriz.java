@@ -2,13 +2,13 @@ package com.example.backendvkr.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "authoriz")
 @RequiredArgsConstructor

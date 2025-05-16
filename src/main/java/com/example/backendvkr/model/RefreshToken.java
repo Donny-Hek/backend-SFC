@@ -1,6 +1,7 @@
 package com.example.backendvkr.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -9,8 +10,7 @@ import org.hibernate.annotations.ColumnDefault;
 import java.time.Instant;
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "refresh_tokens")
 @RequiredArgsConstructor

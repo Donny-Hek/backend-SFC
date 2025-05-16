@@ -6,9 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 import java.time.LocalDate;
 
 @Entity
-@Getter
-@Setter
-//@NoArgsConstructor
+@Data
 @RequiredArgsConstructor
 @Table(name = "users")
 public class User {
