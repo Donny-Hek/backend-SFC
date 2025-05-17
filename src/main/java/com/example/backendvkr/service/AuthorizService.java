@@ -13,8 +13,10 @@ import com.example.backendvkr.repository.UserRepository;
 import com.example.backendvkr.sequrity.JwtTokenUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,26 +39,34 @@ public class AuthorizService {
     private final RefreshTokenService refreshTokenService;
 
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginDto.getLogin(),
-                        loginDto.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginDto.getLogin(),
+                            loginDto.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        String jwt = jwtTokenUtil.generateAccessToken(userDetails);
+            String jwt = jwtTokenUtil.generateAccessToken(userDetails);
 //        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
 
-        return ResponseEntity.ok(new AuthResponseDto(
-                jwt,
-                "Bearer",
+            return ResponseEntity.ok(new AuthResponseDto(
+                    jwt,
+                    "Bearer",
 //                refreshToken.getToken(),
-                userDetails.getId(),
-                userDetails.getFirstName(),
-                userDetails.getLastName(),
-                userDetails.getEmail(),
-                userDetails.getStatus()
-        ));
+                    userDetails.getId(),
+                    userDetails.getFirstName(),
+                    userDetails.getLastName(),
+                    userDetails.getEmail(),
+                    userDetails.getStatus()
+            ));
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("Пользователь не найден"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new MessageResponse("Произошла ошибка при аутентификации"));
+        }
     }
 
     @Transactional
