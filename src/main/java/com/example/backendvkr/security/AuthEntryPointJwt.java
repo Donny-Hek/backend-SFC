@@ -1,4 +1,4 @@
-package com.example.backendvkr.sequrity;
+package com.example.backendvkr.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

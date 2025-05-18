@@ -2,7 +2,7 @@ package com.example.backendvkr.service;
 
 import com.example.backendvkr.repository.RefreshTokenRepository;
 import com.example.backendvkr.repository.UserRepository;
-import com.example.backendvkr.sequrity.JwtTokenUtil;
+import com.example.backendvkr.security.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

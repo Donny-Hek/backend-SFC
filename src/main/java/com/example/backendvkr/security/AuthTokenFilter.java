@@ -1,4 +1,4 @@
-package com.example.backendvkr.sequrity;
+package com.example.backendvkr.security;
 
 import com.example.backendvkr.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;

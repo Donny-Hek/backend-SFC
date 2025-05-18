@@ -5,6 +5,7 @@ import com.example.backendvkr.service.ExaminaitionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(value = "/api/examinations")
@@ -12,11 +13,21 @@ import org.springframework.web.bind.annotation.*;
 public class ExaminationController {
 private final ExaminaitionService examinaitionService;
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadExaminaionFiles(@RequestBody LoginDto loginDto) {
-//        return examinaitionService.uploadExaminaionFiles();
+    public ResponseEntity<?> uploadExaminaionFiles(@RequestParam("excelFile") MultipartFile excelFile,
+                                                   @RequestParam("photos") MultipartFile[] photos) {
+        return examinaitionService.uploadExaminaionFiles(excelFile,photos);
     }
-    @GetMapping("/info")
-    public ResponseEntity<?> accountInfo (@RequestBody LoginDto loginDto) {
-//        return examinaitionService.accountInfo();
+    @GetMapping("/info/{id}")
+    public Integer accountInfo (@PathVariable Integer id) {
+        return examinaitionService.accountInfo(id);
+    }
+    @GetMapping("/last/{id}")
+    public ResponseEntity<?> accountLastExamination (@PathVariable Integer id) {
+        return examinaitionService.accountLastExamination(id);
+    }
+
+    @GetMapping("/shema/{subjectId}")
+    public ResponseEntity<?> getAnswerSchema (@PathVariable Integer subjectId) {
+        return examinaitionService.getAnswerSchema(subjectId);
     }
 }

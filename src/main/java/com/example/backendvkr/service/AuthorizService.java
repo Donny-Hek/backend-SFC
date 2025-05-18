@@ -5,12 +5,11 @@ import com.example.backendvkr.dto.LoginDto;
 import com.example.backendvkr.dto.MessageResponse;
 import com.example.backendvkr.dto.RegisterDto;
 import com.example.backendvkr.model.Authoriz;
-import com.example.backendvkr.model.RefreshToken;
 import com.example.backendvkr.model.User;
 import com.example.backendvkr.repository.AuthorizRepository;
 import com.example.backendvkr.repository.SubscriptionRepository;
 import com.example.backendvkr.repository.UserRepository;
-import com.example.backendvkr.sequrity.JwtTokenUtil;
+import com.example.backendvkr.security.JwtTokenUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor

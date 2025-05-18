@@ -1,6 +1,5 @@
 package com.example.backendvkr.repository;
 
-import com.example.backendvkr.model.RefreshToken;
 import com.example.backendvkr.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

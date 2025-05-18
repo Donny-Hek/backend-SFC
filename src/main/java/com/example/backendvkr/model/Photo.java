@@ -1,12 +1,12 @@
 package com.example.backendvkr.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.Instant;
 
 @Data
 @Entity
@@ -22,7 +22,14 @@ public class Photo {
     @Column(name = "size", nullable = false)
     private Integer size;
 
-    @Column(name = "patch", nullable = false, length = 512)
-    private String patch;
+    @Column(name = "file_photo", nullable = false)
+    private byte[] filePhoto;
 
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "uploaded_at")
+    private Instant uploadedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "examination_id", nullable = false)
+    private Examination examination;
 }
