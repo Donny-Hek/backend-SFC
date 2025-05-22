@@ -18,15 +18,19 @@ private final ExaminaitionService examinaitionService;
         return examinaitionService.uploadExaminaionFiles(excelFile,photos);
     }
     @GetMapping("/info/{id}")
-    public Integer accountInfo (@PathVariable Integer id) {
+    public Integer[] accountInfo (@PathVariable Integer id) {
         return examinaitionService.accountInfo(id);
     }
     @GetMapping("/last/{id}")
     public ResponseEntity<?> accountLastExamination (@PathVariable Integer id) {
         return examinaitionService.accountLastExamination(id);
     }
+    @GetMapping("/list")
+    public String[] subjectList(){
+        return examinaitionService.subjectList();
+    }
 
-    @GetMapping("/shema/{subjectId}")
+    @GetMapping("/schema/{subjectId}")
     public ResponseEntity<?> getAnswerSchema (@PathVariable Integer subjectId) {
         return examinaitionService.getAnswerSchema(subjectId);
     }

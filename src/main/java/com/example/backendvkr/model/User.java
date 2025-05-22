@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -40,6 +41,9 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
     private Authoriz authoriz; //обязательное
+
+    @OneToMany(mappedBy = "examination")
+    private List<Examination> examinations;
 
     public User(String firstName, String lastName, String status, Subscription free, LocalDate now) {
         this.firstName=firstName;

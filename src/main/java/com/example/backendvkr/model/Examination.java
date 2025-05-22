@@ -2,6 +2,11 @@ package com.example.backendvkr.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -22,5 +27,12 @@ public class Examination {
 
     @Column(name = "answers_file", nullable = false)
     private byte[] answersFile;
+
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
+    private LocalDate createdAt;
+
+    @OneToMany(mappedBy = "examination",fetch = FetchType.LAZY)
+    private Set<Photo> photos = new LinkedHashSet<>();
 
 }

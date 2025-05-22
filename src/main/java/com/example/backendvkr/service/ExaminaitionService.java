@@ -1,33 +1,50 @@
 package com.example.backendvkr.service;
 
-import com.example.backendvkr.dto.LoginDto;
+import com.example.backendvkr.model.Examination;
+import com.example.backendvkr.model.Subject;
+import com.example.backendvkr.model.Subscription;
+import com.example.backendvkr.model.User;
+import com.example.backendvkr.repository.ExaminationRepository;
+import com.example.backendvkr.repository.SubjectRepository;
+import com.example.backendvkr.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 @RequiredArgsConstructor
 public class ExaminaitionService {
+    private final UserRepository userRepository;
+    private final ExaminationRepository examinationRepository;
+    private final SubjectRepository subjectRepository;
+
     public ResponseEntity<?> uploadExaminaionFiles(MultipartFile excelFile, MultipartFile[] photos) {
+
 //        return registrationService.login(loginDto);
     }
 
-    public Integer accountInfo(Integer id) {
-//        return registrationService.login(loginDto);
+    public Integer[] accountInfo(Integer id) {
+        User user = userRepository.getUserById(id);
+        Integer counted = examinationRepository.countExaminationByUser_IdAndCreatedAt_Month(user.getId(), (short) LocalDate.now().getMonthValue());
+        return new Integer[]{counted, user.getSubs().getChecks()};
     }
 
-    public ResponseEntity<?> accountLastExamination (Integer id) {
+    public ResponseEntity<?> accountLastExamination(Integer id) {
 //        return examinaitionService.accountInfo(id);
     }
 
-    public void readAnswersFile(MultipartFile file){
+    public void readAnswersFile(MultipartFile file) {
 //читать только ту область, где ответы. ПО ячейкам
     }
 
-    public void generateResponseFile(){
+    public void generateResponseFile() {
 //каждый раз после получения распознавания из фото,
 // сохранять json строку для бланка с фото. Каждую строку добалять в файл с ответами.
 //        byte[] addRowToExcel(MultipartFile file, List<String> newRowData) throws IOException {
@@ -61,11 +78,18 @@ public class ExaminaitionService {
 
     }
 
-    public void getAnswerSchema (Integer subjectId) {
+    public void getAnswerSchema(Integer subjectId) {
+//        return examinaitionService.accountLastExamination(subjectId);
+    }
+
+    public void getResultByPhoto(MultipartFile[] photos) {
 //        return examinaitionService.accountLastExamination(id);
     }
 
-    public void getResultByPhoto (MultipartFile[] photos) {
-//        return examinaitionService.accountLastExamination(id);
+    public String[] subjectList(String type) {
+
+        List<Subject> subjects=subjectRepository.getSubjectsBySubjType(type);
+        return new String[]{};
     }
 }
+

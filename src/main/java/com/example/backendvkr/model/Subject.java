@@ -26,6 +26,4 @@ public class Subject {
 
     @OneToMany(mappedBy = "subject",fetch = FetchType.LAZY)
     private Set<Examination> examinations = new LinkedHashSet<>();
-
-
 }
