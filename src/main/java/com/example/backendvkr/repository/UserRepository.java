@@ -13,5 +13,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User getUserById(Integer id);
 
-    List<Examination> getExaminationsById(Integer id);
+    Optional<User> getUserByAuthoriz_Email(String authorizEmail);
 }

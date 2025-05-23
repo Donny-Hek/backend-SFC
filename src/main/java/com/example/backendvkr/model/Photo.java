@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -27,9 +28,17 @@ public class Photo {
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "uploaded_at")
-    private Instant uploadedAt;
+    private LocalDate uploadedAt;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "examination_id", nullable = false)
     private Examination examination;
+
+    public Photo(String originalFilename, int size, byte[] bytes, Examination examination) {
+        this.name=originalFilename;
+        this.size=size;
+        this.filePhoto=bytes;
+        this.examination=examination;
+        this.uploadedAt=LocalDate.now();
+    }
 }

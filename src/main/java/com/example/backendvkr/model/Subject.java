@@ -1,12 +1,13 @@
 package com.example.backendvkr.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-
+@Data
 @Entity
 @Table(name = "subjects")
 public class Subject {

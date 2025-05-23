@@ -1,6 +1,6 @@
 package com.example.backendvkr.service;
 
-import com.example.backendvkr.repository.RefreshTokenRepository;
+//import com.example.backendvkr.repository.RefreshTokenRepository;
 import com.example.backendvkr.repository.UserRepository;
 import com.example.backendvkr.security.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class RefreshTokenService {
     @Value("${jwt.refresh.expiration}")
     private long refreshExpiration;
-    private final RefreshTokenRepository refreshTokenRepository;
+//    private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
 
