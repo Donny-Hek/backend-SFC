@@ -1,6 +1,7 @@
 package com.example.backendvkr.controller;
 
 import com.example.backendvkr.service.ExaminationService;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/api/examinations")
 @RequiredArgsConstructor
+//@NoArgsConstructor
 public class ExaminationController {
     private final ExaminationService examinationService;
 

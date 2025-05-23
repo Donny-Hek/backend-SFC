@@ -2,14 +2,8 @@ package com.example.backendvkr.service;
 
 import com.example.backendvkr.dto.MessageResponse;
 import com.example.backendvkr.dto.TaskDto;
-import com.example.backendvkr.model.Examination;
-import com.example.backendvkr.model.Photo;
-import com.example.backendvkr.model.Subject;
-import com.example.backendvkr.model.User;
-import com.example.backendvkr.repository.ExaminationRepository;
-import com.example.backendvkr.repository.PhotoRepository;
-import com.example.backendvkr.repository.SubjectRepository;
-import com.example.backendvkr.repository.UserRepository;
+import com.example.backendvkr.model.*;
+import com.example.backendvkr.repository.*;
 import com.example.backendvkr.security.JwtTokenUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +30,8 @@ public class ExaminationService {
     private final JwtTokenUtil jwtTokenUtil;
     private final PhotoRepository photoRepository;
     private final PhotoService photoService;
+    private final AuthorizService authorizService;
+    private final AuthorizRepository authorizRepository;
 
     @Transactional
     public void uploadExaminationFiles(
@@ -44,10 +40,13 @@ public class ExaminationService {
             MultipartFile[] photos,
             Integer subjId) throws IOException {
         String email = jwtTokenUtil.getEmailFromAccessToken(token);
-        User user = userRepository.getUserByAuthoriz_Email(email).orElseThrow(
+//        Authoriz authoriz=authorizRepository.findByEmail(email).orElseThrow(
+//                () -> new UsernameNotFoundException("User Not Found with emil: " + email)
+//        );
+//        User user = userRepository.getUserByAuthoriz(authoriz);
+        User user = userRepository.findByAuthoriz_Email(email).orElseThrow(
                 () -> new UsernameNotFoundException("User Not Found with emil: " + email)
         );
-
         if (photos != null && photos.length > 0 && photos.length < 10) {
             Subject subject = subjectRepository.getSubjectsById(subjId);//предмет
             int questionsAmount = subject.getQuestions();

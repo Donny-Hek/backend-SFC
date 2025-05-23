@@ -29,38 +29,38 @@
     <properties>
         <java.version>21</java.version>
     </properties>
-    <repositories>
-        <repository>
-            <id>openpnp</id>
-            <url>https://raw.githubusercontent.com/openpnp/openpnp/maven</url>
-        </repository>
-    </repositories>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>openpnp</id>-->
+<!--            <url>https://raw.githubusercontent.com/openpnp/openpnp/maven</url>-->
+<!--        </repository>-->
+<!--    </repositories>-->
     <dependencies>
 <!--        <dependency>-->
 <!--            <groupId>org.openpnp</groupId>-->
 <!--            <artifactId>opencv</artifactId>-->
 <!--            <version>4.7.0-0</version>-->
 <!--        </dependency>-->
-        <dependency>
-            <groupId>nu.pattern</groupId>
-            <artifactId>opencv</artifactId>
-            <version>2.4.9-7</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.tess4j</groupId>
-            <artifactId>tess4j</artifactId>
-            <version>5.3.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>nu.pattern</groupId>-->
+<!--            <artifactId>opencv</artifactId>-->
+<!--            <version>2.4.9-7</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>net.sourceforge.tess4j</groupId>-->
+<!--            <artifactId>tess4j</artifactId>-->
+<!--            <version>5.4.0</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.vladmihalcea</groupId>
-            <artifactId>hibernate-types-55</artifactId>
+            <artifactId>hibernate-types-60</artifactId>
             <version>2.21.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.6.15.Final</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.hibernate</groupId>-->
+<!--            <artifactId>hibernate-core</artifactId>-->
+<!--            <version>5.6.15.Final</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>

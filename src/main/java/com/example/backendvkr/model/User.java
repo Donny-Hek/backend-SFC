@@ -42,7 +42,7 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
     private Authoriz authoriz; //обязательное
 
-    @OneToMany(mappedBy = "examination")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Examination> examinations;
 
     public User(String firstName, String lastName, String status, Subscription free, LocalDate now) {

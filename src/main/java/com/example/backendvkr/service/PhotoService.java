@@ -12,16 +12,5 @@ import java.util.Set;
 @Service
 public class PhotoService {
 
-    private static Set<Photo> getPhotos(MultipartFile[] photos, Examination examination) throws IOException {
-        Set<Photo> photosToRecognize = new LinkedHashSet<>();
-        for (MultipartFile file : photos) {
-            if (!file.isEmpty()) {
-                Photo ph = new Photo(
-                        file.getOriginalFilename(), (int) file.getSize(),
-                        file.getBytes(), examination);
-                photosToRecognize.add(ph);
-            }
-        }
-        return photosToRecognize;
-    }
+
 }
